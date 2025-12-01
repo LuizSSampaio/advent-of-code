@@ -2,3 +2,11 @@
 pub fn solve() -> Int {
   todo
 }
+
+fn wrap(n: Int) -> Int {
+  let reminder = n % 100
+  case reminder < 0 {
+    True -> reminder + 100
+    False -> reminder
+  }
+}
