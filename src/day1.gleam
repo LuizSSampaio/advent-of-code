@@ -1,6 +1,10 @@
+import simplifile
+
 /// Must receive an file containing dial move instructions and return the number of times that the dial reached 0
 pub fn solve() -> Int {
-  todo
+  let assert Ok(content) = simplifile.read(from: "res/day1.txt")
+
+  0
 }
 
 fn wrap(n: Int) -> Int {
