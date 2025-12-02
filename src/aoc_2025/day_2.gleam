@@ -1,28 +1,35 @@
 import gleam/bool
 import gleam/int
 import gleam/list
-import gleam/result
 import gleam/string
+import utils/int_utils
 
-type Range(kind) {
-  Range(min: kind, max: kind)
-}
-
-pub fn pt_1(input: String) -> Int {
-  solve(input, id_is_valid_pt1)
-}
-
-pub fn pt_2(input: String) -> Int {
-  solve(input, id_is_valid_pt2)
-}
-
-fn solve(input: String, id_validator: fn(String) -> Bool) -> Int {
+pub fn parse(input: String) -> List(#(Int, Int)) {
   input
   |> string.split(",")
-  |> list.map(parse_range)
+  |> list.map(fn(range) {
+    let assert [from, to] =
+      range
+      |> string.trim()
+      |> string.split("-")
+      |> list.map(int_utils.unsafe_parse)
+    #(from, to)
+  })
+}
+
+pub fn pt_1(ranges: List(#(Int, Int))) -> Int {
+  solve(ranges, id_is_valid_pt1)
+}
+
+pub fn pt_2(ranges: List(#(Int, Int))) -> Int {
+  solve(ranges, id_is_valid_pt2)
+}
+
+fn solve(ranges: List(#(Int, Int)), id_validator: fn(String) -> Bool) -> Int {
+  ranges
   |> list.fold(0, fn(acc, range) {
     let invalid_sum =
-      list.range(range.min, range.max)
+      list.range(range.0, range.1)
       |> list.fold(0, fn(sum, id) {
         case id |> int.to_string() |> id_validator() {
           True -> sum
@@ -31,24 +38,6 @@ fn solve(input: String, id_validator: fn(String) -> Bool) -> Int {
       })
     acc + invalid_sum
   })
-}
-
-fn parse_range(range: String) -> Range(Int) {
-  let parts = range |> string.trim() |> string.split("-")
-  list.each(parts, string.trim)
-  let part0 =
-    parts
-    |> list.first()
-    |> result.unwrap("0")
-    |> int.parse()
-    |> result.unwrap(0)
-  let part1 =
-    parts
-    |> list.last()
-    |> result.unwrap("0")
-    |> int.parse()
-    |> result.unwrap(0)
-  Range(part0, part1)
 }
 
 fn id_is_valid_pt1(id: String) -> Bool {
