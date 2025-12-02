@@ -1,7 +1,7 @@
 import gleam/int
 import gleam/list
-import gleam/result
 import gleam/string
+import utils/result_utils
 
 const start_pos = 50
 
@@ -10,8 +10,9 @@ pub fn parse(input: String) -> List(Int) {
   |> string.split("\n")
   |> list.map(fn(instruction) {
     case instruction {
-      "R" <> val -> int.parse(val) |> result.unwrap(0)
-      "L" <> val -> int.parse(val) |> result.unwrap(0) |> int.negate()
+      "R" <> val -> int.parse(val) |> result_utils.unsafe_unwrap()
+      "L" <> val ->
+        int.parse(val) |> result_utils.unsafe_unwrap() |> int.negate()
       _ -> 0
     }
   })
@@ -41,7 +42,7 @@ pub fn pt_2(rotations: List(Int)) -> Int {
 }
 
 fn wrap(n: Int) -> Int {
-  let remainder = n |> int.remainder(100) |> result.unwrap(0)
+  let remainder = n |> int.remainder(100) |> result_utils.unsafe_unwrap()
   case remainder < 0 {
     True -> remainder + 100
     False -> remainder
@@ -50,8 +51,12 @@ fn wrap(n: Int) -> Int {
 
 fn pass_zero(start: Int, rotation: Int) -> Int {
   let rotation_magnitude =
-    rotation |> int.divide(100) |> result.unwrap(0) |> int.absolute_value()
-  let rotation_reduced = rotation |> int.remainder(100) |> result.unwrap(0)
+    rotation
+    |> int.divide(100)
+    |> result_utils.unsafe_unwrap()
+    |> int.absolute_value()
+  let rotation_reduced =
+    rotation |> int.remainder(100) |> result_utils.unsafe_unwrap()
 
   case start + rotation_reduced {
     x if x <= 0 && start != 0 -> 1
