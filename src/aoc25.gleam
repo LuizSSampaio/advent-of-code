@@ -9,8 +9,7 @@ pub fn main() -> Nil {
     "Day 1: " <> int.to_string(d1_res.0) <> " | " <> int.to_string(d1_res.1),
   )
 
-  let d2_res = day2.solve("res/day2.txt")
-  io.println(
-    "Day 2: " <> int.to_string(d2_res.0) <> " | " <> int.to_string(d2_res.1),
-  )
+  io.println("Day 2: ")
+  io.println("Part 1: " <> day2.part1("res/day2.txt") |> int.to_string())
+  io.println("Part 2: " <> day2.part2("res/day2.txt") |> int.to_string())
 }
