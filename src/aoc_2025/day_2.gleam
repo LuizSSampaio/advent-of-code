@@ -6,13 +6,10 @@ import utils/parse_utils
 
 pub fn parse(input: String) -> List(#(Int, Int)) {
   input
-  |> string.split(",")
+  |> parse_utils.fields_by(",")
   |> list.map(fn(range) {
     let assert [from, to] =
-      range
-      |> string.trim()
-      |> string.split("-")
-      |> list.map(parse_utils.unsafe_parse)
+      parse_utils.parsed_fields_by(range, "-", parse_utils.unsafe_int_parse)
     #(from, to)
   })
 }
