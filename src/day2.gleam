@@ -17,8 +17,7 @@ pub fn solve(input_path: String) -> #(Int, Int) {
   |> list.map(parse_range)
   |> list.fold(#(0, 0), fn(acc, range) {
     let invalid_sum =
-      range
-      |> viable_range()
+      list.range(range.min, range.max)
       |> list.filter(fn(x) {
         x
         |> int.to_string()
@@ -51,13 +50,6 @@ fn parse_range(range: String) -> Range(Int) {
     |> int.parse()
     |> result.unwrap(0)
   Range(part0, part1)
-}
-
-fn viable_range(range: Range(Int)) -> List(Int) {
-  case digits_count(range.min), digits_count(range.max) {
-    len1, len2 if len1 == len2 && len1 % 2 != 0 -> list.new()
-    _, _ -> list.range(range.min, range.max)
-  }
 }
 
 fn id_is_valid(id: String) -> Bool {
