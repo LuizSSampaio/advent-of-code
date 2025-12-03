@@ -1,7 +1,4 @@
-import gleam/bool
-import gleam/float
 import gleam/int
-import gleam/io
 import gleam/list
 import gleam/order
 import gleam/pair
@@ -31,13 +28,11 @@ pub fn pt_1(banks: List(List(Int))) {
   int.multiply(selection.0, 10) |> int.add(selection.1) |> int.add(acc)
 }
 
-pub fn pt_2(banks: List(List(Int))) {
-  max_joltage(banks, 12)
-}
+const pt_2_needed_bateries = 12
 
-fn max_joltage(banks: List(List(Int)), digits: Int) -> Int {
+pub fn pt_2(banks: List(List(Int))) {
   use acc, bank <- list.fold(banks, 0)
-  list.range(digits - 1, 0)
+  list.range(pt_2_needed_bateries - 1, 0)
   |> list.fold(#(0, bank), fn(acc, i) {
     let #(val, bank) = acc
     let #(max, loc) =
