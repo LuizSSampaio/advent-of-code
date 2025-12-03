@@ -1,5 +1,7 @@
+import utils/parse_utils
+
 pub fn parse(input: String) -> List(String) {
-  todo
+  input |> parse_utils.lines()
 }
 
 pub fn pt_1(banks: List(String)) {
